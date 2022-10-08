@@ -58,6 +58,7 @@ RIGHT_ROTATION_MATRIX = np.array([
         [math.sin(ROTATION_SPEED), math.cos(ROTATION_SPEED)]
     ])
 
+
 def close(): 
     # Closes the program 
     pygame.display.quit()
@@ -83,7 +84,7 @@ def _draw_scene(position, orientation, plane):
         ray_position = position
         ray_orientation = np.array([0.0, 0.0])
         ray_orientation[0] = orientation[0] + plane[0] * cameraX
-        ray_orientation[1] = orientation[1] + plane[1] * cameraX + .000000000000001 # avoid ZDE 
+        ray_orientation[1] = orientation[1] + plane[1] * cameraX + .000000000000001  # avoid ZDE
 
         map_position = np.array([int(ray_position[0]), int(ray_position[1])])
 
@@ -149,7 +150,7 @@ def _draw_scene(position, orientation, plane):
 
         # Wall colors 0 to 3
         wall_colors = np.array([[0, 0, 0], [150,0,0], [0,150,0], [0,0,150]])
-        colors[i] = wall_colors[MAP[map_position[0]][map_position[1]]]                                                  
+        colors[i] = wall_colors[MAP[map_position[0]][map_position[1]]]
 
     return columns, colors, draw_starts, draw_ends
 
