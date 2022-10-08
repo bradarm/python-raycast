@@ -6,7 +6,7 @@ A re-implementation of the raycasting code present in [oscr/PyRay](https://githu
 git clone https://github.com/bradarm/python-raycast.git
 cd python-raycast
 pip3 install -r requirements.txt
-python 3./main.py
+python3 ./main.py
 ```
 
 ## Usage
