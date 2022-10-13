@@ -67,8 +67,11 @@ def close():
 
 def get_fps(clock, font):
     clock.tick()
-    fps = str(int(clock.get_fps()))
-    fps_text = font.render(fps, 1, pygame.Color('coral'))
+    try:
+        fps = str(int(clock.get_fps()))
+        fps_text = font.render(fps, 1, pygame.Color('coral'))
+    except:
+        fps_text = None
     return fps_text
 
 
@@ -166,11 +169,19 @@ def draw_scene(clock, font, screen, position, orientation, plane):
         pygame.draw.line(screen, colors[i], (columns[i], draw_starts[i]), (columns[i], draw_ends[i]), 2)
 
     # Drawing HUD
-    screen.blit(get_fps(clock, font), (10, 0))
+    draw_fps(clock, font, screen)
 
     # Updating display
     pygame.event.pump()
     pygame.display.flip()
+    return
+
+def draw_fps(clock, font, screen):
+    fps_text = get_fps(clock, font)
+    if fps_text:
+        pygame.draw.rect(screen, (25,25,25), (10, 0, 40, 20))
+        screen.blit(get_fps(clock, font), (10, 0))
+        pygame.display.update((10,0,50,50))
     return
 
 
@@ -217,8 +228,12 @@ def main():
     orientation = np.array([1.0, 0.0])
     plane = np.array([0.0, 0.5])
 
+    # Initial Render
+    draw_scene(clock, font, screen, position, orientation, plane)
+
     # PyGame Loop
     while True:
+        scene_changed = False
         # Catches user input
         # Sets keys[key] to True or False
         for event in pygame.event.get():
@@ -235,17 +250,24 @@ def main():
 
         if keys[K_LEFT]:
             orientation, plane = turn_left(orientation, plane)
+            scene_changed = True
 
         if keys[K_RIGHT]:
             orientation, plane = turn_right(orientation, plane)
+            scene_changed = True
 
         if keys[K_UP]:
             position = move_forward(position, orientation)
+            scene_changed = True
                 
         if keys[K_DOWN]:
             position = move_backward(position, orientation)
+            scene_changed = True
 
-        draw_scene(clock, font, screen, position, orientation, plane)
+        if scene_changed:
+            draw_scene(clock, font, screen, position, orientation, plane)
+        else:
+            draw_fps(clock, font, screen)
     return
 
 
